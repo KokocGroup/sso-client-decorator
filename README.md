@@ -3,7 +3,18 @@ sso-client
 
 Client decorator for sso authentication scheme
 
-Need to add sso_client_settings.py file
+Install:
+```
+pip install -e git+https://github.com/KokocGroup/sso-client-decorator.git#egg=sso-client-decorator
+```
+
+Need to add sso_client_settings.py file, you can copy from .default file, example:
+```
+cp /path/to/virtualenv_dir/.virtualenvs/virtualenv_name/src/sso-client-decorator/sso_client_decorator/sso_client_settings.default sso_client_settings.py
+```
+
+
+Uses:
 
 ```
 from sso_client_decorator.sso_django import sso_access
