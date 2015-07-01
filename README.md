@@ -10,7 +10,7 @@ pip install -e git+https://github.com/KokocGroup/sso-client-decorator.git#egg=ss
 
 Need to add sso_client_settings.py file, you can copy from .default file, example:
 ```
-cp /path/to/virtualenv_dir/.virtualenvs/virtualenv_name/src/sso-client-decorator/sso_client_decorator/sso_client_settings.default sso_client_settings.py
+cp /path/to/virtualenv_dir/.virtualenvs/virtualenv_name/src/sso-client-decorator/sso_client_decorator/sso_client_settings.default.py sso_client_settings.py
 ```
 
 

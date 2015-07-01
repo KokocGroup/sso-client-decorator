@@ -1,0 +1,50 @@
+1. Добавить в модель Services сервис, если его еще там нет (host указывается с портом, если там не 80 порт)
+   Примеры:
+       Services(host='page-parser.kokoc.com', title='Сервис парсинга страниц', ip='123.45.67.89')
+       Services(host='new-serv.kokoc.com:8080', title='Новый сервис', ip='1.2.3.4')
+   После этого мы можем посмотреть api_key для сервиса (так как он генерится при insert)
+
+2. Ставим декоратор из репы:
+   pip install -e git+https://github.com/KokocGroup/sso-client-decorator.git#egg=sso-client-decorator
+   Понадобится логин/пароль от аккаунта на гитхабе
+
+3. Копируем файл с настройками для реализации sso:
+   cp /path/to/virtualenv_dir/.virtualenvs/virtualenv_name/src/sso-client-decorator/sso_client_decorator/sso_client_settings.default.py sso_client_settings.py
+   вместо virtualenv_name и /path/to/virtualenv_dir вставить свои пути
+
+4. Отредактировать файл настроек sso_client_settings.py
+   Основные три параметра:
+       SSO_API_KEY = '4a76da50' - api_key берем из модельки Services для этого сервиса
+       SSO_URL = 'http:/gkit.ru' - url sso приложения авторизации на ките, обычно там же где и логин - 'http:/gkit.ru'
+       SSO_CALLBACK_URL = 'http://page-parser.kokoc.com' - url на который будет редиректить sso приложение, должен совпадать с host
+   Остальные параметры оставляем по умолчанию.
+
+5. На клиенте на каждой нужной въюшке ставим декоратор:
+   Импортировать декторатор нужно соответственно движку, если django - то sso_client_decorator.sso_django, если flask - sso_client_decorator.sso_flask
+
+   Пример для джанговой вьюхи:
+
+   from sso_client_decorator.sso_django import sso_access
+
+   @sso_access
+   def view(request):
+       response = TemplateResponse(request, 'index.html', {})
+       return response
+
+6. Декоратор ставить куку 'user' - в ней можно найти id и email пользователя
+
+
+Схема SSO реализации (полная):
+1) Юзер заходит на сервис (нет аутентификационной куки - auth_token)
+2) (В фоне) сервис делает запрос на КИТ по урлу SSO_REQUEST_TOKEN_URL (из файла настроек sso_client_settings.py)
+   и получает request_token
+3) Юзер редиректится сервисом на страницу логина КИТ по урлу SSO_URL, вводит логин пароль (если не аутентифицирован),
+   ему присваевается auth_token и вместе с ним он редиректится обратно на сервис по урле SSO_CALLBACK_URL
+4) (В фоне) сервис делает запрос на КИТ по урлу SSO_AUTH_TOKEN_URL с request_token'ом и auth_token'ом
+   и в ответ получает информацию о юзере (id, email), которую ставит в куку,
+   а так же ставится аутентификационная кука (auth_token)
+
+Схема SSO реализации (урощенная):
+1) Юзер заходит на сервис (есть аутентификационная кука - auth_token)
+2) (В фоне) сервис делает запрос на КИТ по урлу SSO_ACCESS_URL с параметрами auth_token и user_id
+   Если что-то не так, то схема идет по полному варианту (описан выше)
