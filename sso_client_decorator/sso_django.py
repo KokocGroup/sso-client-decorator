@@ -22,15 +22,6 @@ def sso_access(view):
         if have_access and user:
             result = view(*args, **kwargs)
             if auth_token_get:
-                try:
-                    cookie = request.session.get("auth_token", None)
-                    user = request.session.get("user", None)
-                    if cookie is not None:
-                        del request.session["auth_token"]
-                    if user is not None:
-                        del request.session["user"]
-                except Exception as e:
-                    logging.exception(e)
                 result.set_cookie("user", json.dumps(user), max_age=settings.SSO_COOKIES_LIVE_TIME)
                 result.set_cookie("auth_token", auth_token_get, max_age=settings.SSO_COOKIES_LIVE_TIME)
         else:
