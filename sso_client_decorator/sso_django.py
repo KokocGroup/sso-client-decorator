@@ -26,7 +26,7 @@ def sso_access(view):
         if have_access and user:
             if auth_token_get and isinstance(user, dict):
                 for key in user:
-                    cookie_name = 'user_{}'.format(key)
+                    cookie_name = 'user_{0}'.format(key)
                     result.set_cookie(cookie_name, user[key], max_age=settings.SSO_COOKIES_LIVE_TIME)
                 result.set_cookie('auth_token', auth_token_get, max_age=settings.SSO_COOKIES_LIVE_TIME)
         else:
@@ -42,7 +42,7 @@ def sso_access(view):
                 'next': redirect_to,
                 'api_key': settings.SSO_API_KEY,
             }
-            redirect_url = '{}?{}'.format(
+            redirect_url = '{0}?{1}'.format(
                 settings.SSO_URL,
                 urllib.urlencode(params),
             )
