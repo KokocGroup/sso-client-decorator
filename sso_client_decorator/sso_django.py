@@ -16,14 +16,16 @@ def sso_access(view):
 
         if not have_access:
             auth_token_cookie = request.COOKIES.get('auth_token')
-            user = request.COOKIES.get('user')
+            user = request.COOKIES.get('user_id')
             have_access = sso_access_check(auth_token_cookie, user)
 
         if have_access and user:
             result = view(*args, **kwargs)
-            if auth_token_get:
-                result.set_cookie("user", json.dumps(user), max_age=settings.SSO_COOKIES_LIVE_TIME)
-                result.set_cookie("auth_token", auth_token_get, max_age=settings.SSO_COOKIES_LIVE_TIME)
+            if auth_token_get and isinstance(user, dict):
+                for key in user:
+                    cookie_name = 'user_{}'.format(key)
+                    result.set_cookie(cookie_name, user[key], max_age=settings.SSO_COOKIES_LIVE_TIME)
+                result.set_cookie('auth_token', auth_token_get, max_age=settings.SSO_COOKIES_LIVE_TIME)
         else:
             request_token = sso_get_request_token()
             redirect_to = settings.SSO_CALLBACK_URL

@@ -16,6 +16,7 @@ def sso_request_check(request_token, auth_token):
         res = requests.get(settings.SSO_AUTH_TOKEN_URL, params={
             'request_token': request_token,
             'auth_token': auth_token,
+            'api_key': settings.SSO_API_KEY
         })
         res.raise_for_status()
         response = json.loads(res.content)
@@ -30,17 +31,16 @@ def sso_request_check(request_token, auth_token):
 
     return have_access, user
 
-def sso_access_check(auth_token, user):
+def sso_access_check(auth_token, user_id):
     have_access = False
 
-    if not (auth_token and user):
+    if not (auth_token and user_id):
         return have_access
 
     try:
-        user_dict = json.loads(user)
         res = requests.get(settings.SSO_ACCESS_URL, params={
             'auth_token': auth_token,
-            'user_id': user_dict['id']
+            'user_id': int(user_id)
         })
         res.raise_for_status()
         have_access = True
