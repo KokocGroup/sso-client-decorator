@@ -9,6 +9,10 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden
 def sso_access(view):
     def call_view(*args, **kwargs):
         request = args[0]
+        result = view(*args, **kwargs)
+
+        if settings.SSO_DEBUG_MODE:
+            return result
 
         request_token = request.GET.get('request_token')
         auth_token_get = request.GET.get('auth_token')
@@ -20,7 +24,6 @@ def sso_access(view):
             have_access = sso_access_check(auth_token_cookie, user)
 
         if have_access and user:
-            result = view(*args, **kwargs)
             if auth_token_get and isinstance(user, dict):
                 for key in user:
                     cookie_name = 'user_{}'.format(key)
