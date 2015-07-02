@@ -4,7 +4,7 @@ import logging
 import urllib
 from sso_client_decorator import sso_request_check, sso_access_check, sso_get_request_token
 import sso_client_settings as settings
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 
 def sso_access(view):
     def call_view(*args, **kwargs):
@@ -28,6 +28,9 @@ def sso_access(view):
                 result.set_cookie('auth_token', auth_token_get, max_age=settings.SSO_COOKIES_LIVE_TIME)
         else:
             request_token = sso_get_request_token()
+            if not request_token:
+                return HttpResponseForbidden()
+
             redirect_to = settings.SSO_CALLBACK_URL
             if hasattr(request, 'path'):
                 redirect_to += request.path
