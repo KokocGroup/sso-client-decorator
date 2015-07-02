@@ -29,7 +29,7 @@ def sso_access(view):
         else:
             request_token = sso_get_request_token()
             if not request_token:
-                return HttpResponseForbidden()
+                return HttpResponseForbidden('Forbidden, cause SSO server is not responding')
 
             redirect_to = settings.SSO_CALLBACK_URL
             if hasattr(request, 'path'):
