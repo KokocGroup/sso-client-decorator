@@ -1,6 +1,7 @@
 # -*-coding: utf-8 -*-
 import json
 import logging
+
 import requests
 import sso_client_settings as settings
 
@@ -31,6 +32,7 @@ def sso_request_check(request_token, auth_token):
 
     return have_access, user
 
+
 def sso_access_check(auth_token, user_id):
     have_access = False
 
@@ -40,7 +42,8 @@ def sso_access_check(auth_token, user_id):
     try:
         res = requests.get(settings.SSO_ACCESS_URL, params={
             'auth_token': auth_token,
-            'user_id': int(user_id)
+            'user_id': int(user_id),
+            'api_key': settings.SSO_API_KEY
         })
         res.raise_for_status()
         have_access = True
@@ -48,6 +51,7 @@ def sso_access_check(auth_token, user_id):
         logging.exception(e)
 
     return have_access
+
 
 def sso_get_request_token():
     request_token = None
