@@ -11,7 +11,6 @@ setup(
     download_url='https://github.com/KokocGroup/sso-client-decorator/tarball/v{0}'.format(VERSION),
     packages=['sso_client_decorator'],
     install_requires=[
-        'requests',
-        'django'
+        'requests'
     ],
 )
