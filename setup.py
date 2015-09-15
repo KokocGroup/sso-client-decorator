@@ -1,10 +1,8 @@
-# -*-coding: utf-8 -*-
-from __future__ import unicode_literals
-
+# -*- coding: utf-8 -*-
 from setuptools import setup
 
 
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 
 setup(
     name='sso-client-decorator',
