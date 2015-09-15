@@ -1,11 +1,13 @@
 # -*-coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from setuptools import setup
 
 
 VERSION = "0.0.1"
 
 setup(
-    name=u'sso-client-decorator',
+    name='sso-client-decorator',
     description='client decorator for sso authentication scheme',
     version=VERSION,
     url='https://github.com/KokocGroup/sso-client-decorator',
