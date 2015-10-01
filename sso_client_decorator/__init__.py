@@ -18,7 +18,7 @@ def sso_request_check(request_token, auth_token):
             'request_token': request_token,
             'auth_token': auth_token,
             'api_key': settings.SSO_API_KEY
-        })
+        }, verify=False)
         res.raise_for_status()
         response = json.loads(res.content)
         if response['success'] and response['data']['user']:
@@ -44,7 +44,7 @@ def sso_access_check(auth_token, user_id):
             'auth_token': auth_token,
             'user_id': int(user_id),
             'api_key': settings.SSO_API_KEY
-        })
+        }, verify=False)
         res.raise_for_status()
         have_access = True
     except Exception as e:
@@ -58,7 +58,7 @@ def sso_get_request_token():
     try:
         res = requests.get(settings.SSO_REQUEST_TOKEN_URL, params={
             'api_key': settings.SSO_API_KEY
-        })
+        }, verify=False)
         res.raise_for_status()
         response = json.loads(res.content)
         if response['success'] and response['data']['request_token']:

@@ -1,10 +1,11 @@
 # -*-coding: utf-8 -*-
-import json
-import logging
 import urllib
+
+from django.http import HttpResponseRedirect, HttpResponseForbidden
+
 from sso_client_decorator import sso_request_check, sso_access_check, sso_get_request_token
 import sso_client_settings as settings
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+
 
 def sso_access(view):
     def call_view(*args, **kwargs):
