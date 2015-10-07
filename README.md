@@ -5,7 +5,7 @@ Client decorator for sso authentication scheme
 
 Install:
 ```
-pip install -e git+https://github.com/KokocGroup/sso-client-decorator.git#egg=sso-client-decorator
+pip install sso-client-decorator
 ```
 
 Need to add sso_client_settings.py file, you can copy from .default file, example:
