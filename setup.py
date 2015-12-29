@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from setuptools import setup
+from setuptools import setup, find_packages
 
-VERSION = "0.0.8"
+VERSION = "0.0.9"
 
 setup(
     name='sso-client-decorator',
@@ -9,7 +9,7 @@ setup(
     version=VERSION,
     url='https://github.com/KokocGroup/sso-client-decorator',
     download_url='https://github.com/KokocGroup/sso-client-decorator/tarball/v{0}'.format(VERSION),
-    packages=['sso_client_decorator'],
+    packages=find_packages(),
     package_dir={'sso_client_decorator': 'sso_client_decorator'},
     install_requires=[
         'requests'
