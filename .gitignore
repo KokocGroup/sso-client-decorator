@@ -1,2 +1,6 @@
 *.pyc
 .idea
+.cache/
+dist/
+setup.pysetup.py
+sso_client_decorator.egg-info/
