@@ -20,7 +20,6 @@ class SSOAuthentication(object):
     def request_check(self, request_token, auth_token):
         have_access = False
         user = None
-
         if not (request_token and auth_token):
             return have_access, user
 
@@ -30,6 +29,7 @@ class SSOAuthentication(object):
                 'auth_token': auth_token,
                 'api_key': self.api_key
             }, verify=False)
+
             res.raise_for_status()
             response = json.loads(res.content)
             if response['success'] and response['data']['user']:
@@ -43,7 +43,7 @@ class SSOAuthentication(object):
     def check_authentication(self, request_token=None, auth_token=None, user_id=None, redirect_next=None):
         have_access, user = self.request_check(request_token, auth_token)
         if not have_access:
-            have_access = self.access_check(auth_token, user_id)
+            have_access, user = self.access_check(auth_token, user_id)
 
         if have_access and user:
             return user, True
@@ -68,7 +68,7 @@ class SSOAuthentication(object):
 
     def access_check(self, auth_token, user_id):
         have_access = False
-
+        user = None
         if not (auth_token and user_id):
             return have_access
 
@@ -79,11 +79,15 @@ class SSOAuthentication(object):
                 'api_key': self.api_key
             }, verify=False)
             res.raise_for_status()
+            response = json.loads(res.content)
+            if response['success'] and response['data']['user']:
+                user = response['data']
+                have_access = True
             have_access = True
         except Exception as e:
             logging.exception(e)
 
-        return have_access
+        return have_access, user
 
     def get_token(self):
         request_token = None

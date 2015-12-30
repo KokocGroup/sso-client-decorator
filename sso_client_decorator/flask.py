@@ -56,7 +56,7 @@ class SSOAuthentication(object):
     def sso_access(self, func):
         @wraps(func)
         def wrapped(*args, **kwargs):
-            request_token = request.args.get('request_token')
+            request_token = request.args.get('request_token', request.cookies.get('request_token'))
             auth_token = request.args.get('auth_token', request.cookies.get('auth_token'))
             user_id = request.cookies.get('user_id')
             redirect_to = request.path
@@ -74,6 +74,7 @@ class SSOAuthentication(object):
                 response = current_app.make_response(view_result)
                 response.set_cookie('auth_token', auth_token)
                 response.set_cookie('user_id', str(result['user']))
+                response.set_cookie('request_token', request_token)
                 return response
             return result
         return wrapped
