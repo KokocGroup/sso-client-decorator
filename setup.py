@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
-VERSION = "0.0.9"
+VERSION = "0.0.10"
 
 setup(
     name='sso-client-decorator',
