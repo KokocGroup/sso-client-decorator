@@ -70,7 +70,7 @@ class SSOAuthentication(object):
         have_access = False
         user = None
         if not (auth_token and user_id):
-            return have_access
+            return have_access, user
 
         try:
             res = requests.get(self.access_url, params={
@@ -83,7 +83,6 @@ class SSOAuthentication(object):
             if response['success'] and response['data']['user']:
                 user = response['data']
                 have_access = True
-            have_access = True
         except Exception as e:
             logging.exception(e)
 
