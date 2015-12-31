@@ -41,9 +41,9 @@ class SSOAuthentication(object):
         return have_access, user
 
     def check_authentication(self, request_token=None, auth_token=None, user_id=None, redirect_next=None):
-        # have_access, user = self.request_check(request_token, auth_token)
-
-        have_access, user = self.access_check(auth_token, user_id)
+        have_access, user = self.request_check(request_token, auth_token)
+        if not have_access:
+            have_access, user = self.access_check(auth_token, user_id)
 
         if have_access and user:
             return user, True
