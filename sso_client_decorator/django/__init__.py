@@ -3,7 +3,7 @@
 import urllib
 from functools import wraps
 
-from utils import make_sso_client
+from .utils import make_sso_client
 
 
 def sso_access(view):
