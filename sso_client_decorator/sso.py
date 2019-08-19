@@ -34,7 +34,7 @@ class SSOAuthentication(object):
             }, verify=False)
 
             res.raise_for_status()
-            response = json.loads(res.content)
+            response = json.loads(res.content.decode('utf-8'))
             if response['success'] and response['data']['user']:
                 user = response['data']
                 have_access = True
@@ -82,7 +82,7 @@ class SSOAuthentication(object):
                 'api_key': self.api_key
             }, verify=False)
             res.raise_for_status()
-            response = json.loads(res.content)
+            response = json.loads(res.content.decode('utf-8'))
             if response['success'] and response['data']['user']:
                 user = response['data']
                 have_access = True
@@ -98,7 +98,7 @@ class SSOAuthentication(object):
                 'api_key': self.api_key
             }, verify=False)
             res.raise_for_status()
-            response = json.loads(res.content)
+            response = json.loads(res.content.decode('utf-8'))
             if response['success'] and response['data']['request_token']:
                 request_token = response['data']['request_token']
         except Exception as e:
