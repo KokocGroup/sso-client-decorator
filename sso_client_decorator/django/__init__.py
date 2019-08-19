@@ -1,6 +1,10 @@
 #! coding: utf-8
 
-import urllib
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
+
 from functools import wraps
 
 from .utils import make_sso_client
@@ -16,7 +20,7 @@ def sso_access(view):
         user_id = request.COOKIES.get('user_id')
         redirect_to = request.path
         if request.GET:
-            redirect_to = "{}?{}".format(redirect_to, urllib.urlencode(request.GET))
+            redirect_to = "{}?{}".format(redirect_to, urlencode(request.GET))
         result, status = sso.check_authentication(request_token, auth_token, user_id, redirect_to)
         if status:
             request.user = result

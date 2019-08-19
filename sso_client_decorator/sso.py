@@ -1,6 +1,9 @@
 import json
 import logging
-import urllib
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
 
 import requests
 
@@ -59,7 +62,7 @@ class SSOAuthentication(object):
             }
             redirect_url = '{0}?{1}'.format(
                 self.auth_url,
-                urllib.urlencode(params),
+                urlencode(params),
             )
 
             result = self.redirect_handler(redirect_url)
