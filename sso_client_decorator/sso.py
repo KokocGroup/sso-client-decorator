@@ -89,6 +89,9 @@ class SSOAuthentication(object):
             if response['success'] and response['data']['user']:
                 user = response['data']
                 have_access = True
+        except requests.HTTPError as e:
+            if e.response.status_code >= 500:
+                logging.exception(e)
         except Exception as e:
             logging.exception(e)
 
